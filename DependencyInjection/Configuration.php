@@ -32,7 +32,6 @@ class Configuration implements ConfigurationInterface
     /**
      * Configuration constructor.
      *
-     * @param string   $alias
      * @param Source[] $sources
      */
     public function __construct(string $alias, array $sources)
@@ -41,13 +40,11 @@ class Configuration implements ConfigurationInterface
         $this->sources = $sources;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function getConfigTreeBuilder()
     {
         $treeBuilder = new TreeBuilder();
         $rootNode = $treeBuilder->root($this->alias);
+        $rootNode->setDeprecated('The child node "%node%" at path "%path%" is deprecated and will be removed on v2.x. It has no effect anymore. Please refer to https://github.com/symfony/symfony/pull/25699');
 
         foreach ($this->sources as $source) {
             $source->getNodeDefinition($rootNode);

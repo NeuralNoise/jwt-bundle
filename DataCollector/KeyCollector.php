@@ -28,40 +28,29 @@ class KeyCollector implements Collector
 
     /**
      * KeyCollector constructor.
-     *
-     * @param KeyAnalyzerManager|null $jwkAnalyzerManager
      */
     public function __construct(?KeyAnalyzerManager $jwkAnalyzerManager = null)
     {
         $this->jwkAnalyzerManager = $jwkAnalyzerManager;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function collect(array &$data, Request $request, Response $response, \Exception $exception = null)
     {
         $this->collectJWK($data);
         $this->collectJWKSet($data);
     }
 
-    /**
-     * @param array $data
-     */
     private function collectJWK(array &$data)
     {
         $data['key']['jwk'] = [];
         foreach ($this->jwks as $id => $jwk) {
             $data['key']['jwk'][$id] = [
-                'jwk'     => $jwk,
+                'jwk' => $jwk,
                 'analyze' => null === $this->jwkAnalyzerManager ? [] : $this->jwkAnalyzerManager->analyze($jwk),
             ];
         }
     }
 
-    /**
-     * @param array $data
-     */
     private function collectJWKSet(array &$data)
     {
         $data['key']['jwkset'] = [];
@@ -73,7 +62,7 @@ class KeyCollector implements Collector
                 }
             }
             $data['key']['jwkset'][$id] = [
-                'jwkset'  => $jwkset,
+                'jwkset' => $jwkset,
                 'analyze' => $analyze,
             ];
         }
@@ -84,10 +73,6 @@ class KeyCollector implements Collector
      */
     private $jwks = [];
 
-    /**
-     * @param string $id
-     * @param JWK    $jwk
-     */
     public function addJWK(string $id, JWK $jwk)
     {
         $this->jwks[$id] = $jwk;
@@ -98,10 +83,6 @@ class KeyCollector implements Collector
      */
     private $jwksets = [];
 
-    /**
-     * @param string $id
-     * @param JWKSet $jwkset
-     */
     public function addJWKSet(string $id, JWKSet $jwkset)
     {
         $this->jwksets[$id] = $jwkset;

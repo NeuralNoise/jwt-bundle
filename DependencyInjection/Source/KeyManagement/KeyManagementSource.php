@@ -42,22 +42,16 @@ class KeyManagementSource implements SourceWithCompilerPasses
             new JWKSource(),
             new JWKUriSource(),
         ];
-        if (class_exists(HttplugBundle::class)) {
+        if (\class_exists(HttplugBundle::class)) {
             $this->sources[] = new JKUSource();
         }
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function name(): string
     {
         return 'key_mgmt';
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function load(array $configs, ContainerBuilder $container)
     {
         if (!$this->isEnabled()) {
@@ -74,9 +68,6 @@ class KeyManagementSource implements SourceWithCompilerPasses
         }
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function getNodeDefinition(NodeDefinition $node)
     {
         if (!$this->isEnabled()) {
@@ -87,9 +78,6 @@ class KeyManagementSource implements SourceWithCompilerPasses
         }
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function prepend(ContainerBuilder $container, array $config): array
     {
         if (!$this->isEnabled()) {
@@ -106,12 +94,9 @@ class KeyManagementSource implements SourceWithCompilerPasses
         return $result;
     }
 
-    /**
-     * @return bool
-     */
     private function isEnabled(): bool
     {
-        return class_exists(JWKFactory::class);
+        return \class_exists(JWKFactory::class);
     }
 
     /**
